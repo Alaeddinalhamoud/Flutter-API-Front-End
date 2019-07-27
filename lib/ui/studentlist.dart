@@ -1,5 +1,11 @@
 import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:studentapp/models/student.dart';
+
+
 class StudentList extends StatefulWidget {
   StudentList({Key key}) : super(key: key);
   
@@ -11,7 +17,11 @@ class StudentList extends StatefulWidget {
 class _StudentListState extends State<StudentList> {
    
 
-   
+@override
+void initState(){
+  super.initState();
+  _fetchStudents();
+}
 
   @override
   Widget build(BuildContext context) {    
@@ -27,5 +37,18 @@ Widget _buildAppBar(BuildContext context){
   ) ;
 }
 
+
+Future<Student> _fetchStudents() async{
+    final response= await
+    http.get('http://192.168.0.10:5005/api/Student/1');
+    if(response.statusCode==200){
+      print(response.body);
+      var data= Student.fromJson(json.decode(response.body));
+      print(data.dob);
+      return data;
+    }else{
+      throw Exception('Failed to load the student...');
+    }
+}
 
 }
