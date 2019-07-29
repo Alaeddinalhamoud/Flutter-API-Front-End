@@ -1,54 +1,54 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:studentapp/models/api.services.dart';
 import 'package:studentapp/models/student.dart';
-
 
 class StudentList extends StatefulWidget {
   StudentList({Key key}) : super(key: key);
-  
 
   @override
   _StudentListState createState() => _StudentListState();
 }
 
 class _StudentListState extends State<StudentList> {
-   
+  var students = new List<Student>();
 
-@override
-void initState(){
-  super.initState();
-  _fetchStudents();
-}
+  _getStudents() {
+    APIServices.fetchStudents().then((response) {
+      setState(() {
+        Iterable list = json.decode(response.body);
+        students = list.map((model) => Student.fromJson(model)).toList();
+      });
+    });
+  }
 
   @override
-  Widget build(BuildContext context) {    
+  void initState() {
+    super.initState();  
+    _getStudents();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(context),
-
+      body: students == null
+          ? Center(child: Text('Empty'))
+          : ListView.builder(
+              itemCount: students.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(students[index].firstName),
+                );
+              },
+            ),
     );
   }
 
-Widget _buildAppBar(BuildContext context){
-  return AppBar(
-    title: Text("Student APP"),
-  ) ;
-}
-
-
-Future<Student> _fetchStudents() async{
-    final response= await
-    http.get('http://192.168.0.10:5005/api/Student/1');
-    if(response.statusCode==200){
-      print(response.body);
-      var data= Student.fromJson(json.decode(response.body));
-      print(data.dob);
-      return data;
-    }else{
-      throw Exception('Failed to load the student...');
-    }
-}
-
+  Widget _buildAppBar(BuildContext context) {
+    return AppBar(
+      title: Text("Student APP"),
+    );
+  }
 }
