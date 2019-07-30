@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:studentapp/models/api.services.dart';
 import 'package:studentapp/models/student.dart';
+import 'package:studentapp/ui/addstudent.dart';
 
 class StudentList extends StatefulWidget {
   StudentList({Key key}) : super(key: key);
@@ -32,6 +33,13 @@ class _StudentListState extends State<StudentList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton:FloatingActionButton(
+        child:Icon(Icons.add) ,
+        onPressed: (){
+            //Call new ui to add student.
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>AddStudent()));
+        },
+      ) ,
       appBar: _buildAppBar(context),
       body: students == null
           ? Center(child: Text('Empty'))
