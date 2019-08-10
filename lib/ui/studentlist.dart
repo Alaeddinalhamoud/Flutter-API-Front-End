@@ -33,13 +33,7 @@ class _StudentListState extends State<StudentList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton:FloatingActionButton(
-        child:Icon(Icons.add) ,
-        onPressed: (){
-            //Call new ui to add student.
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>AddStudent()));
-        },
-      ) ,
+      floatingActionButton:_buidFloatingButton() ,
       appBar: _buildAppBar(context),
       body: students == null
           ? Center(child: Text('Empty'))
@@ -59,4 +53,15 @@ class _StudentListState extends State<StudentList> {
       title: Text("Student APP"),
     );
   }
+
+  Widget _buidFloatingButton() {
+    return FloatingActionButton(
+        child:Icon(Icons.person_add) ,
+        onPressed: (){
+            //Call new ui to add student.
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>AddStudent()));
+        },
+      );
+  }
+  
 }
