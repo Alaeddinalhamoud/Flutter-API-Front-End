@@ -98,7 +98,7 @@ class _AddStudentState extends State<AddStudent> {
             onChanged: (value)=>setGender(value),             
             ))          
         ],
-      ),
+      ), 
     ) ;
   }
 

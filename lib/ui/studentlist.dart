@@ -28,7 +28,7 @@ class _StudentListState extends State<StudentList> {
   void initState() {
     super.initState();  
     _getStudents();
-  }
+  } 
 
   @override
   Widget build(BuildContext context) {
