@@ -4,9 +4,12 @@ import 'dart:async';
 import 'dart:convert';
 
 class APIServices {
+  static String getStudentsUrl='http://192.168.0.6:5005/api/Student';
+  static String postStudenttUrl='http://192.168.0.6:5005/api/Student';
 
+  
   static Future fetchStudents() async {
-    return await http.get('http://192.168.0.7:5005/api/Student');
+    return await http.get(getStudentsUrl);
   }
 
   static Future postStudent(Student student) async {
@@ -15,9 +18,9 @@ class APIServices {
       'Content-type': 'application/json',
       'Accept': 'application/json'
     }; 
-    var myStudent = student.toJson();
+    var myStudent = student.toMap();
     var studentBody = json.encode(myStudent);
-    var res = await http.post('http://192.168.0.7:5005/api/Student', headers: header, body: studentBody);
+    var res = await http.post(postStudenttUrl, headers: header, body: studentBody);
     print(res.statusCode);
     return res.statusCode;
   }

@@ -1,37 +1,43 @@
-import 'package:json_annotation/json_annotation.dart';
-import 'package:http/http.dart' as http;
-part 'student.g.dart';
-
-@JsonSerializable()
-
 class Student {
- // final int id;
-  final String firstName;
-  final String lastName;
-  final String dob;
-  final String gender;
+  int _id;
+  String _firstName;
+  String _lastName;
+  int _gender;
 
-  Student({ this.firstName, this.lastName, this.dob, this.gender});
+  Student(this._firstName, this._lastName, this._gender);
+  Student.withId(this._id, this._firstName, this._lastName, this._gender);
+  int get id => _id;
+  String get firstName => _firstName;
+  String get lastName => _lastName;
+  int get gender => _gender;
 
-  factory Student.fromJson(Map<String, dynamic> json) => _$StudentFromJson(json);
-     /* : firstName= json['firstName'],
-        lastName= json['lastName'],
-        dob= json['dob'],
-        gender= json['gender'];  */
+  set firstName(String newFirstName) {
+    _firstName = newFirstName;
+  }
 
+  set lastName(String newLastName) {
+    _lastName = newLastName;
+  }
 
-  Map<String, dynamic> toJson() => _$StudentToJson(this);
- /*   {
-     // 'id': id,
-      'firstName': firstName,
-      'lastName': lastName,
-      'dob': dob,
-      'gender': gender
-    };
-  */
+  set gender(int newgender) {
+    _gender = newgender;
+  }
 
+  Map<String, dynamic> toMap() {
+    var map = Map<String, dynamic>();
+    map["firstName"] = _firstName;
+    map["lastName"] = _lastName;
+    map["gender"] = _gender;
+    if (_id != null) {
+      map["id"] = _id;
+    }
+    return map;
+  }
 
-
-  
-
+  Student.fromObject(dynamic o) {
+    this._id = o["id"];
+    this._firstName = o["firstName"];
+    this._lastName = o["lastName"];
+    this._gender = o["gender"];
+  }
 }

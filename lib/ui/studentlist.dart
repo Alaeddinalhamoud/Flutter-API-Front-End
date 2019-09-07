@@ -19,7 +19,7 @@ class _StudentListState extends State<StudentList> {
     APIServices.fetchStudents().then((response) {
       setState(() {
         Iterable list = json.decode(response.body);
-        students = list.map((model) => Student.fromJson(model)).toList();
+        students = list.map((model) => Student.fromObject(model)).toList();
       });
     });
   }
@@ -37,15 +37,22 @@ class _StudentListState extends State<StudentList> {
       appBar: _buildAppBar(context),
       body: students == null
           ? Center(child: Text('Empty'))
-          : ListView.builder(
+          :_studentsListItems() ,
+    );
+  }
+
+  ListView _studentsListItems(){
+      return ListView.builder(
               itemCount: students.length,
               itemBuilder: (context, index) {
                 return ListTile(
-                  title: Text(students[index].firstName),
+                  title: Text(students[index].firstName + " "+students[index].lastName),
+                  onTap:(){
+                    navigateToStudent(this.students[index]);
+                  } ,
                 );
               },
-            ),
-    );
+            );
   }
 
   Widget _buildAppBar(BuildContext context) {
@@ -59,9 +66,19 @@ class _StudentListState extends State<StudentList> {
         child:Icon(Icons.person_add) ,
         onPressed: (){
             //Call new ui to add student.
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>AddStudent()));
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>AddStudent(Student('','',1))));
         },
       );
+  }
+
+
+  void navigateToStudent(Student student) async {
+    bool result =await Navigator.push(context, 
+    MaterialPageRoute(builder: (context)=> AddStudent(student)),
+    );
+    if(result ==true){
+      
+    }
   }
   
 }
