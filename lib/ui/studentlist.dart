@@ -13,46 +13,53 @@ class StudentList extends StatefulWidget {
 }
 
 class _StudentListState extends State<StudentList> {
-  var students = new List<Student>();
+  List<Student> students;
 
-  _getStudents() {
+  getStudents() {
     APIServices.fetchStudents().then((response) {
+      Iterable list = json.decode(response.body);
+      List<Student> studentList = List<Student>();
+      studentList = list.map((model) => Student.fromObject(model)).toList();
       setState(() {
-        Iterable list = json.decode(response.body);
-        students = list.map((model) => Student.fromObject(model)).toList();
+        students = studentList;
       });
     });
   }
 
-  @override
-  void initState() {
-    super.initState();  
-    _getStudents();
-  } 
+ // @override
+ // void initState() {
+ //   super.initState();
+ //   getStudents();
+ // }
 
   @override
   Widget build(BuildContext context) {
+    if (students == null) {
+      students = List<Student>();
+      getStudents();
+    }
     return Scaffold(
-      floatingActionButton:_buidFloatingButton() ,
+      floatingActionButton: _buidFloatingButton(),
       appBar: _buildAppBar(context),
       body: students == null
           ? Center(child: Text('Empty'))
-          :_studentsListItems() ,
+          : _studentsListItems(),
     );
   }
 
-  ListView _studentsListItems(){
-      return ListView.builder(
-              itemCount: students.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(students[index].firstName + " "+students[index].lastName),
-                  onTap:(){
-                    navigateToStudent(this.students[index]);
-                  } ,
-                );
-              },
-            );
+  ListView _studentsListItems() {
+    return ListView.builder(
+      itemCount: students.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title:
+              Text(students[index].firstName + " " + students[index].lastName),
+          onTap: () {
+            navigateToStudent(this.students[index]);
+          },
+        );
+      },
+    );
   }
 
   Widget _buildAppBar(BuildContext context) {
@@ -63,22 +70,24 @@ class _StudentListState extends State<StudentList> {
 
   Widget _buidFloatingButton() {
     return FloatingActionButton(
-        child:Icon(Icons.person_add) ,
-        onPressed: (){
-            //Call new ui to add student.
-            Navigator.push(context, MaterialPageRoute(builder: (context)=>AddStudent(Student('','',1))));
-        },
-      );
+      child: Icon(Icons.person_add),
+      onPressed: () {
+        //Call new ui to add student.
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => AddStudent(Student('', '', 1))));
+      },
+    );
   }
-
 
   void navigateToStudent(Student student) async {
-    bool result =await Navigator.push(context, 
-    MaterialPageRoute(builder: (context)=> AddStudent(student)),
+    bool result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => AddStudent(student)),
     );
-    if(result ==true){
-      
+    if (result == true) {
+      getStudents();
     }
   }
-  
 }
