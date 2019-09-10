@@ -4,8 +4,8 @@ import 'dart:async';
 import 'dart:convert';
 
 class APIServices {
-  static String getStudentsUrl='http://192.168.0.6:5005/api/Student';
-  static String postStudenttUrl='http://192.168.0.6:5005/api/Student';
+  static String getStudentsUrl='http://192.168.0.8:5005/api/Student';
+  static String postStudenttUrl='http://192.168.0.8:5005/api/Student';
 
   
   static Future fetchStudents() async {

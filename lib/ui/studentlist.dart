@@ -14,6 +14,7 @@ class StudentList extends StatefulWidget {
 
 class _StudentListState extends State<StudentList> {
   List<Student> students;
+  int count = 0;
 
   getStudents() {
     APIServices.fetchStudents().then((response) {
@@ -21,16 +22,17 @@ class _StudentListState extends State<StudentList> {
       List<Student> studentList = List<Student>();
       studentList = list.map((model) => Student.fromObject(model)).toList();
       setState(() {
-        students = studentList;
+        students = studentList;    
+        count = students.length;   
       });
     });
   }
 
- // @override
- // void initState() {
- //   super.initState();
- //   getStudents();
- // }
+ @override
+  void initState() {
+   super.initState();
+   getStudents();
+  } 
 
   @override
   Widget build(BuildContext context) {
@@ -49,15 +51,18 @@ class _StudentListState extends State<StudentList> {
 
   ListView _studentsListItems() {
     return ListView.builder(
-      itemCount: students.length,
+      itemCount: count,
       itemBuilder: (context, index) {
-        return ListTile(
+        return  Card(
+          color: Colors.white,
+          elevation: 2.0,
+          child:  ListTile(
           title:
               Text(students[index].firstName + " " + students[index].lastName),
           onTap: () {
             navigateToStudent(this.students[index]);
           },
-        );
+        ));
       },
     );
   }
@@ -72,11 +77,8 @@ class _StudentListState extends State<StudentList> {
     return FloatingActionButton(
       child: Icon(Icons.person_add),
       onPressed: () {
+        navigateToStudent(Student('','',1));
         //Call new ui to add student.
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => AddStudent(Student('', '', 1))));
       },
     );
   }
@@ -86,8 +88,6 @@ class _StudentListState extends State<StudentList> {
       context,
       MaterialPageRoute(builder: (context) => AddStudent(student)),
     );
-    if (result == true) {
-      getStudents();
-    }
+      getStudents();   
   }
 }
