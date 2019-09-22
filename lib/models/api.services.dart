@@ -4,24 +4,28 @@ import 'dart:async';
 import 'dart:convert';
 
 class APIServices {
-  static String getStudentsUrl='http://192.168.0.8:5005/api/Student';
-  static String postStudenttUrl='http://192.168.0.8:5005/api/Student';
-
+  static String studentsUrl='http://192.168.0.8:5005/api/Student/';
   
-  static Future fetchStudents() async {
-    return await http.get(getStudentsUrl);
-  }
-
-  static Future postStudent(Student student) async {
-
-    Map<String, String> header = {
+  static Map<String, String> header = {
       'Content-type': 'application/json',
       'Accept': 'application/json'
     }; 
+
+  
+  static Future fetchStudents() async {
+    return await http.get(studentsUrl);
+  }
+static Future deleteStudent(int id) async{
+  return await http.delete(studentsUrl+id.toString(), headers: header);
+}
+  static Future postStudent(Student student) async {  
     var myStudent = student.toMap();
     var studentBody = json.encode(myStudent);
-    var res = await http.post(postStudenttUrl, headers: header, body: studentBody);
+    var res = await http.post(studentsUrl, headers: header, body: studentBody);
     print(res.statusCode);
     return res.statusCode;
   }
+
+
+
 }

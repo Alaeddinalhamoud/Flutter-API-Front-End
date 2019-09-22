@@ -87,7 +87,7 @@ class _AddStudentState extends State<AddStudent> {
           ),
           ListTile(
               title: DropdownButton<String>(
-            items: _gendersDropDownList.map((String value) {
+              items: _gendersDropDownList.map((String value) {
               return DropdownMenuItem<String>(
                 value: value,
                 child: Text(value),
@@ -96,7 +96,28 @@ class _AddStudentState extends State<AddStudent> {
             style: textStyle,
             value: retrieveGender(student.gender),
             onChanged: (value) => updateGender(value),
-          ))
+          )),
+          Row(
+           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+             children: <Widget>[
+               RaisedButton(
+                  padding: EdgeInsets.all(8.0),
+                  textColor: Colors.blueAccent,
+                  onPressed:(){
+                   saveStudent();
+                   },
+                  child: Text("Save"),
+               ),
+                RaisedButton(
+                  padding: EdgeInsets.all(8.0),
+                  textColor: Colors.blueAccent,
+                  onPressed:(){
+                   deleteStudent(student.id);
+                   },
+                  child: Text("Delete"),
+               ),
+             ], 
+          ),
         ],
       ),
     );
@@ -138,7 +159,7 @@ void updateLastName (){
         saveStudent();
         break;
       case menuDelete:
-        deleteStudent();
+       // deleteStudent();
         break;
       default:
     }
@@ -152,7 +173,8 @@ void updateLastName (){
     Navigator.pop(context, true);   
   }
 
-  void deleteStudent() {
+  void deleteStudent(int id) {
     print('we are working one delete student');
+    var de=APIServices.deleteStudent(id);
   }
 }

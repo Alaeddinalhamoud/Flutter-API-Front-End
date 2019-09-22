@@ -42,14 +42,14 @@ class _StudentListState extends State<StudentList> {
     }
     return Scaffold(
       floatingActionButton: _buidFloatingButton(),
-      appBar: _buildAppBar(context),
+      appBar: _buildAppBar(),
       body: students == null
           ? Center(child: Text('Empty'))
           : _studentsListItems(),
     );
   }
 
-  ListView _studentsListItems() {
+  Widget _studentsListItems() {
     return ListView.builder(
       itemCount: count,
       itemBuilder: (context, index) {
@@ -67,7 +67,7 @@ class _StudentListState extends State<StudentList> {
     );
   }
 
-  Widget _buildAppBar(BuildContext context) {
+  Widget _buildAppBar() {
     return AppBar(
       title: Text("Student APP"),
     );
