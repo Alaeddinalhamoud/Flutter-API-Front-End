@@ -28,18 +28,11 @@ class _StudentListState extends State<StudentList> {
     });
   }
 
- @override
-  void initState() {
-   super.initState();
-   getStudents();
-  } 
+
 
   @override
   Widget build(BuildContext context) {
-    if (students == null) {
-      students = List<Student>();
       getStudents();
-    }
     return Scaffold(
       floatingActionButton: _buidFloatingButton(),
       appBar: _buildAppBar(),
@@ -51,7 +44,7 @@ class _StudentListState extends State<StudentList> {
 
   Widget _studentsListItems() {
     return ListView.builder(
-      itemCount: count,
+      itemCount: students.length,
       itemBuilder: (context, index) {
         return  Card(
           color: Colors.white,

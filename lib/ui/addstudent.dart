@@ -106,7 +106,7 @@ class _AddStudentState extends State<AddStudent> {
                   onPressed:(){
                    saveStudent();
                    },
-                  child: Text("Save"),
+                  child:textUpdateSave(),
                ),
                 RaisedButton(
                   padding: EdgeInsets.all(8.0),
@@ -176,5 +176,12 @@ void updateLastName (){
   void deleteStudent(int id) {
     print('we are working one delete student');
     var de=APIServices.deleteStudent(id);
+      Navigator.pop(context, true); 
+  }
+
+
+  Widget textUpdateSave(){
+   var text=student.id == null?Text('Save'): Text('Update'); 
+    return text;
   }
 }
