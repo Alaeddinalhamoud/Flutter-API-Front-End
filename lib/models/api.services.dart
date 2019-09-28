@@ -15,15 +15,16 @@ class APIServices {
   static Future fetchStudents() async {
     return await http.get(studentsUrl);
   }
-static Future deleteStudent(int id) async{
-  return await http.delete(studentsUrl+id.toString(), headers: header);
+static Future<bool> deleteStudent(int id) async{
+  var res = await http.delete(studentsUrl+id.toString(), headers: header);
+  return Future.value(res.statusCode == 200 ? true : false);
 }
-  static Future postStudent(Student student) async {  
+  static Future<bool> postStudent(Student student) async {  
     var myStudent = student.toMap();
     var studentBody = json.encode(myStudent);
     var res = await http.post(studentsUrl, headers: header, body: studentBody);
     print(res.statusCode);
-    return res.statusCode;
+    return Future.value(res.statusCode == 200 ? true : false);
   }
 
 

@@ -49,9 +49,11 @@ class _StudentListState extends State<StudentList> {
         return  Card(
           color: Colors.white,
           elevation: 2.0,
-          child:  ListTile(
+          child:ListTile(
+            leading:displayByGender(this.students[index].gender),            
+            trailing: Icon(Icons.arrow_forward_ios),
           title:
-              Text(students[index].firstName + " " + students[index].lastName),
+              Text(this.students[index].firstName + " " + students[index].lastName),
           onTap: () {
             navigateToStudent(this.students[index]);
           },
@@ -82,5 +84,12 @@ class _StudentListState extends State<StudentList> {
       MaterialPageRoute(builder: (context) => AddStudent(student)),
     );
       getStudents();   
+  } 
+
+  Widget displayByGender(int gender){
+    var male=Icon(Icons.person,color: Colors.blue);
+    var female=Icon(Icons.pregnant_woman,color: Colors.pink);
+    var nA=Icon(Icons.battery_unknown,color: Colors.green);
+    return gender==1 ? male :gender==2 ? female : nA;
   }
 }

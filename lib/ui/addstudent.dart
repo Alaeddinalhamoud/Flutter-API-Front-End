@@ -18,12 +18,11 @@ class _AddStudentState extends State<AddStudent> {
   _AddStudentState(this.student);
   var firstNameController = TextEditingController();
   var lastNameController = TextEditingController();
-  final options = const <String>['Save', 'Delete'];
-  static const menuSave = 'Save';
-  static const menuDelete = 'Delete';
+ 
   final _gendersDropDownList = ["Male", "Female", "NA"];
   String _genderDropDownList = "NA";
   var textStyle = TextStyle();
+  final connectionIssurSnackBar = SnackBar(content: Text('Yay! A SnackBar!'));
 
   @override
   Widget build(BuildContext context) {
@@ -38,20 +37,7 @@ class _AddStudentState extends State<AddStudent> {
 
   Widget _buildAppBar(BuildContext context) {
     return AppBar(
-      title: Text("Add Student"),
-      actions: <Widget>[
-        PopupMenuButton<String>(
-          onSelected: selectOption,
-          itemBuilder: (BuildContext context) {
-            return options.map((String option) {
-              return PopupMenuItem<String>(
-                value: option,
-                child: Text(option),
-              );
-            }).toList();
-          },
-        )
-      ],
+      title: Text("Add Student"),    
     );
   }
 
@@ -153,30 +139,16 @@ void updateLastName (){
     return _gendersDropDownList[value - 1];
   }
 
-  void selectOption(String value) async {
-    switch (value) {
-      case menuSave:
-        saveStudent();
-        break;
-      case menuDelete:
-       // deleteStudent();
-        break;
-      default:
-    }
-  }
+  
+  void saveStudent() async {   
+    var saveResponse=await APIServices.postStudent(student);
+    saveResponse == true ? Navigator.pop(context, true) : Scaffold.of(context).showSnackBar(connectionIssurSnackBar) ;
+     }
 
-  void saveStudent() {
-    print('save and back');     
-    var tes=APIServices.postStudent(student);
-    print('Post Data');
-    print(tes);
-    Navigator.pop(context, true);   
-  }
-
-  void deleteStudent(int id) {
+  void deleteStudent(int id) async {
     print('we are working one delete student');
-    var de=APIServices.deleteStudent(id);
-      Navigator.pop(context, true); 
+    var deleteResponse= await APIServices.deleteStudent(id);
+      deleteResponse == true ? Navigator.pop(context, true) : Scaffold.of(context).showSnackBar(connectionIssurSnackBar) ;
   }
 
 
